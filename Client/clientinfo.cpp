@@ -77,7 +77,7 @@ int main(int argc, char* argv[])
         "- Name of Computer: %s\n"
         "- List of disk: %s\n"
         "- Number of free Clusters: %lu\n"
-        "- Total number of Clusters: %lu\n"
+        "- Total number of Clusters: %lu"
         , name, listOfDisk, numberOfFreeClusters, totalNumberOfClusters);
 
     printf("Start send message to server!!\n");
