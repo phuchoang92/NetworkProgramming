@@ -11,6 +11,17 @@ using namespace std;
 #pragma comment(lib, "ws2_32")
 #pragma warning(disable:4996)
 
+char* replaceNull(char* array) {
+    for (int i = 0; i <sizeof(array); i++)
+    {
+        if (array[i] == '\0')
+        {
+            array[i] = ' ';
+        }
+    }
+    return array;
+}
+
 int main(int argc, char* argv[])
 {
     WSADATA wsa;
@@ -45,8 +56,8 @@ int main(int argc, char* argv[])
     }
 
     char name[MAX_COMPUTERNAME_LENGTH + 1];
+    char listOfDisk[26 * 4];
 
-    LPSTR  listOfDisk;
     DWORD size = sizeof(name);
     DWORD nBufferLength = 100;
     DWORD sectorsPerCluster = 0;
@@ -54,19 +65,19 @@ int main(int argc, char* argv[])
     DWORD numberOfFreeClusters = 0;
     DWORD totalNumberOfClusters = 0;
     
-
     GetComputerNameA(name, &size);
-    GetLogicalDriveStringsA(512, listOfDisk);
+    GetLogicalDriveStringsA(sizeof(listOfDisk), listOfDisk);
     GetDiskFreeSpaceA("C:/", &sectorsPerCluster, &bytesPerSector,
         &numberOfFreeClusters, &totalNumberOfClusters);
 
+    replaceNull(listOfDisk);
+
     char buff[256];
     snprintf(buff, sizeof(buff),"- Name of Computer: %s\n" 
+                                "- List of disk: %s\n"
                                 "- Number of free Clusters: %lu\n" 
                                 "- Total number of Clusters: %lu\n"
-                                "- "
-
-        ,name,numberOfFreeClusters, totalNumberOfClusters);
+        ,name,listOfDisk,numberOfFreeClusters, totalNumberOfClusters);
     printf("Start send message to server!!\n");
     while (1)
     {
