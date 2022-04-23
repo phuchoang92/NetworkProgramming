@@ -12,7 +12,7 @@ using namespace std;
 #pragma warning(disable:4996)
 
 char* replaceNull(char* array) {
-    for (int i = 0; i <sizeof(array); i++)
+    for (int i = 0; i < sizeof(array); i++)
     {
         if (array[i] == '\0')
         {
@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
 
     addrinfo* info;
     int ret = getaddrinfo(argv[1], "http", NULL, &info);
-    if (ret != 0){
+    if (ret != 0) {
         printf("Phan giai ten mien that bai.");
     }
 
@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
     DWORD bytesPerSector = 0;
     DWORD numberOfFreeClusters = 0;
     DWORD totalNumberOfClusters = 0;
-    
+
     GetComputerNameA(name, &size);
     GetLogicalDriveStringsA(sizeof(listOfDisk), listOfDisk);
     GetDiskFreeSpaceA("C:/", &sectorsPerCluster, &bytesPerSector,
@@ -73,11 +73,11 @@ int main(int argc, char* argv[])
     replaceNull(listOfDisk);
 
     char buff[256];
-    snprintf(buff, sizeof(buff),"- Name of Computer: %s\n" 
-                                "- List of disk: %s\n"
-                                "- Number of free Clusters: %lu\n" 
-                                "- Total number of Clusters: %lu\n"
-        ,name,listOfDisk,numberOfFreeClusters, totalNumberOfClusters);
+    snprintf(buff, sizeof(buff), "- Name of Computer: %s\n"
+        "- List of disk: %s\n"
+        "- Number of free Clusters: %lu\n"
+        "- Total number of Clusters: %lu\n"
+        , name, listOfDisk, numberOfFreeClusters, totalNumberOfClusters);
     printf("Start send message to server!!\n");
     while (1)
     {
