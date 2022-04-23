@@ -50,6 +50,8 @@ int main(int argc, char* argv[])
 
     addrinfo* temp = info->ai_next;
     while (temp->ai_next != NULL) {
+        if (temp->ai_family == 2)
+            break;
         temp = temp->ai_next;
     }
 
