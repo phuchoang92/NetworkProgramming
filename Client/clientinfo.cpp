@@ -10,28 +10,42 @@
 
 using namespace std;
 
-char* replaceNull(char* array) {
-    for (int i = 0; i < sizeof(array); i++)
-    {
-        if (array[i]=='\0') array[i] = ' ';
-        
-    }
+char* replaceNull(char* array, int size) {
 
-    int cx = 0;
+    string str;
+    int cx = 0, last = 0;
     char buffer[100];
-    char* token = strtok(array," ");
-    
-    while (token != NULL)
-    {
-        DWORD lpBytesPerSector = 0;
-        DWORD lpSectorsPerCluster = 0;
-        DWORD totalNumberOfClusters = 0;
-        DWORD amountOfKBytesOfComputer = 0;
-        GetDiskFreeSpaceA(token, &lpSectorsPerCluster, &lpBytesPerSector, NULL, &totalNumberOfClusters);
-        amountOfKBytesOfComputer = lpBytesPerSector * lpSectorsPerCluster * (totalNumberOfClusters/1024/1024);
-        cx = snprintf(buffer+cx, 100 - cx, " %s %lu MB\n", token, amountOfKBytesOfComputer);
 
-        token = strtok(NULL, " ");
+    DWORD lpBytesPerSector = 0;
+    DWORD lpSectorsPerCluster = 0;
+    DWORD totalNumberOfClusters = 0;
+    DWORD amountOfGBytesOfComputer = 0;
+
+    for (int i = 0; i < size; i++) {
+        str += array[i];
+        if (array[i] == '\0')
+        {
+            if (str != "\0")
+            {
+                char disk[100];
+                strcpy(disk, str.c_str());
+                if (disk[0] != '\0')
+                {
+                    GetDiskFreeSpaceA(disk, &lpSectorsPerCluster, &lpBytesPerSector, NULL, &totalNumberOfClusters);
+                    amountOfGBytesOfComputer = lpBytesPerSector * lpSectorsPerCluster * (totalNumberOfClusters / 1024 / 1024) / 1024;
+                    cx = snprintf(buffer + last, 100, " %s %lu GB\n", str.c_str(), amountOfGBytesOfComputer);
+                    last += cx;
+                    str = "";
+                }
+            }
+        }
+        else
+        {
+            if (array[i] < 0)
+            {
+                break;
+            }
+        }
     }
     return buffer;
 }
@@ -79,8 +93,8 @@ int main(int argc, char* argv[])
 
     GetComputerNameA(name, &size);
     GetLogicalDriveStringsA(sizeof(listOfDisk), listOfDisk);
-    char* diskInfor = replaceNull(listOfDisk);
-
+    char* diskInfor = replaceNull(listOfDisk,sizeof(listOfDisk));
+   
     char buff[256];
     snprintf(buff, sizeof(buff), 
         "- Name of Computer: %s\n"
