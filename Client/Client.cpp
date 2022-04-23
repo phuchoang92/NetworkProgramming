@@ -25,8 +25,9 @@ int main(int argc, char* argv[])
 {
     WSADATA wsa;
     WSAStartup(MAKEWORD(2, 2), &wsa);
-
+    
     addrinfo* info;
+
     int ret = getaddrinfo(argv[1], "http", NULL, &info);
     if (ret != 0) {
         printf("Phan giai ten mien that bai.");
@@ -37,14 +38,14 @@ int main(int argc, char* argv[])
         temp = temp->ai_next;
     }
 
+    int portNumber = stoi(argv[2]);
+
     SOCKADDR_IN addr;
     memcpy(&addr, temp->ai_addr, temp->ai_addrlen);
     addr.sin_family = AF_INET;
-    int val = stoi(argv[2]);
-    addr.sin_port = htons(val);
+    addr.sin_port = htons(portNumber);
 
     SOCKET client = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-
     ret = connect(client, (SOCKADDR*)&addr, sizeof(addr));
 
     if (ret == SOCKET_ERROR)
