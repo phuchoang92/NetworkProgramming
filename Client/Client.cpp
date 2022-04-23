@@ -3,13 +3,12 @@
 #include <format>
 #include <iostream>
 #include <winsock2.h>
-
 #include <ws2tcpip.h>
-
-using namespace std;
 
 #pragma comment(lib, "ws2_32")
 #pragma warning(disable:4996)
+
+using namespace std;
 
 char* replaceNull(char* array) {
     for (int i = 0; i < sizeof(array); i++)
@@ -73,12 +72,15 @@ int main(int argc, char* argv[])
     replaceNull(listOfDisk);
 
     char buff[256];
-    snprintf(buff, sizeof(buff), "- Name of Computer: %s\n"
+    snprintf(buff, sizeof(buff), 
+        "- Name of Computer: %s\n"
         "- List of disk: %s\n"
         "- Number of free Clusters: %lu\n"
         "- Total number of Clusters: %lu\n"
         , name, listOfDisk, numberOfFreeClusters, totalNumberOfClusters);
+
     printf("Start send message to server!!\n");
+
     while (1)
     {
         ret = send(client, buff, sizeof(buff), 0);

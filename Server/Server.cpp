@@ -2,10 +2,10 @@
 #include <string>
 #include <WinSock2.h>
 
-using namespace std;
-
 #pragma comment(lib, "ws2_32")
 #pragma warning(disable:4996)
+
+using namespace std;
 
 int main(int arg, char* argv[])
 {
