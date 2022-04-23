@@ -13,12 +13,12 @@ int main(int arg, char* argv[])
     WSAStartup(MAKEWORD(2, 2), &wsa);
 
     SOCKET server = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+
     SOCKADDR_IN addr;
-    
     addr.sin_family = AF_INET;
     addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    int val = stoi(argv[1]);
-    addr.sin_port = htons(val);
+    int portNumber = stoi(argv[1]);
+    addr.sin_port = htons(portNumber);
 
     bind(server, (SOCKADDR*)&addr, sizeof(addr));
 

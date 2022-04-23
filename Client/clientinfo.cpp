@@ -91,8 +91,7 @@ int main(int argc, char* argv[])
 
     ret = send(client, buff, sizeof(buff), 0);
 
-    while (1)
-    {
+    while (1){
 
         ret = recv(client, buff, sizeof(buff), 0);
         if (ret <= 0)
