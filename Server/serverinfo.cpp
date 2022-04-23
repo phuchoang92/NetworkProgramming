@@ -28,14 +28,20 @@ int main(int arg, char* argv[])
 
     SOCKET client = accept(server, NULL, NULL);
 
-    char buffer[3000];
-    int ret = 0;
+    char buffer[256];
+    int ret = recv(client, buffer, sizeof(buffer), 0);
+
+    printf("Du lieu tu client:\n%s\n", buffer);
 
     while (1)
     {
-        ret = recv(client, buffer, sizeof(buffer), 0);
+        printf("Nhap thong tin muon gui: ");
 
-        printf("Du lieu tu client:\n%s\n", buffer);
+        fgets(buffer, sizeof(buffer), stdin);
+
+        if (strncmp(buffer, "exit", 4) == 0) break;
+        
+        send(client, buffer, sizeof(buffer), 0);
     }
 
     closesocket(client);

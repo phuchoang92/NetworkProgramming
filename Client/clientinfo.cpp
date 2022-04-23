@@ -13,12 +13,27 @@ using namespace std;
 char* replaceNull(char* array) {
     for (int i = 0; i < sizeof(array); i++)
     {
-        if (array[i] == '\0')
-        {
-            array[i] = ' ';
-        }
+        if (array[i]=='\0') array[i] = ' ';
+        
     }
-    return array;
+
+    int cx = 0;
+    char buffer[100];
+    char* token = strtok(array," ");
+    
+    while (token != NULL)
+    {
+        DWORD lpBytesPerSector = 0;
+        DWORD lpSectorsPerCluster = 0;
+        DWORD totalNumberOfClusters = 0;
+        DWORD amountOfKBytesOfComputer = 0;
+        GetDiskFreeSpaceA(token, &lpSectorsPerCluster, &lpBytesPerSector, NULL, &totalNumberOfClusters);
+        amountOfKBytesOfComputer = lpBytesPerSector * lpSectorsPerCluster * (totalNumberOfClusters/1024/1024);
+        cx = snprintf(buffer+cx, 100 - cx, " %s %lu MB\n", token, amountOfKBytesOfComputer);
+
+        token = strtok(NULL, " ");
+    }
+    return buffer;
 }
 
 int main(int argc, char* argv[])
@@ -56,41 +71,32 @@ int main(int argc, char* argv[])
     }
 
     char name[MAX_COMPUTERNAME_LENGTH + 1];
-    char listOfDisk[26 * 4];
+    char listOfDisk[40];
 
     DWORD size = sizeof(name);
-    DWORD nBufferLength = 100;
-    DWORD sectorsPerCluster = 0;
-    DWORD bytesPerSector = 0;
-    DWORD numberOfFreeClusters = 0;
-    DWORD totalNumberOfClusters = 0;
 
     GetComputerNameA(name, &size);
     GetLogicalDriveStringsA(sizeof(listOfDisk), listOfDisk);
-    GetDiskFreeSpaceA("C:/", &sectorsPerCluster, &bytesPerSector,
-        &numberOfFreeClusters, &totalNumberOfClusters);
-
-    replaceNull(listOfDisk);
+    char* diskInfor = replaceNull(listOfDisk);
 
     char buff[256];
     snprintf(buff, sizeof(buff), 
         "- Name of Computer: %s\n"
-        "- List of disk: %s\n"
-        "- Number of free Clusters: %lu\n"
-        "- Total number of Clusters: %lu"
-        , name, listOfDisk, numberOfFreeClusters, totalNumberOfClusters);
+        "- List of disk:\n%s"
+        , name, diskInfor);
 
     printf("Start send message to server!!\n");
 
+    ret = send(client, buff, sizeof(buff), 0);
+
     while (1)
     {
-        ret = send(client, buff, sizeof(buff), 0);
+
+        ret = recv(client, buff, sizeof(buff), 0);
         if (ret <= 0)
             break;
-        printf("Nhap thong tin muon gui: ");
-        fgets(buff, sizeof(buff), stdin);
 
-        if (strncmp(buff, "exit", 4) == 0) break;
+        printf("Du lieu gui tu server: %s", buff);
 
     }
 
