@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string>
 #include <format>
-#include <iostream>
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
@@ -60,7 +59,7 @@ int main(int argc, char* argv[])
 
     SOCKET client = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     ret = connect(client, (SOCKADDR*)&addr, sizeof(addr));
-
+    
     if (ret == SOCKET_ERROR)
     {
         ret = WSAGetLastError();
