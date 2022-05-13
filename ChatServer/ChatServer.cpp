@@ -10,6 +10,27 @@ using namespace std;
 
 SOCKET clients[64];
 int numberClients = 0;
+const char* mess = "Wrong syntax! Reenter message please!\n";
+
+char* LTrim(char* szX)
+{
+	if (' ' == szX[0]) while (' ' == (++szX)[0]);
+	return szX;
+}
+
+char* RTrim(char* szX)
+{
+	int i = strlen(szX);
+	while (' ' == szX[--i]) szX[i] = 0;
+	return szX;
+}
+
+char* Trim(char* szX)
+{
+	szX = LTrim(szX);
+	szX = RTrim(szX);
+	return szX;
+}
 
 DWORD WINAPI threadClient(LPVOID Param) {
 
@@ -19,7 +40,7 @@ DWORD WINAPI threadClient(LPVOID Param) {
 	char word[20];
 	char buffer[256];
 	char clientName[30];
-	const char* mess = "Wrong syntax! Reenter message please!\n";
+	char* nameClient;
 
 	do {
 
@@ -33,30 +54,30 @@ DWORD WINAPI threadClient(LPVOID Param) {
 
 		if (strncmp(word, "client_id:", 9) == 0) break;
 
-		send(client, mess, 38, 0);
+		send(client, mess, strlen(mess), 0);
 
 	} while (1);
 
 	buffer[ret-1] = 0;
 
-	strncpy(clientName ,& buffer[10], 30);
+	strncpy(clientName ,&buffer[10], 30);
 
-	printf("Name: %s\n", clientName);
+	nameClient = Trim(clientName);
 
 	while (true){
 
 		char recvMess[256];
 		ret = recv(client, recvMess, sizeof(recvMess), 0);
 
-		sprintf(buffer, "%s: %s\n", clientName, recvMess);
+		sprintf(buffer, "%s: %s", nameClient, recvMess);
 
-		int lengthName = strcspn(buffer, "\n");
+		int lengthMess = strcspn(buffer, "\n");
 		
 		for (int i = 0; i < numberClients; i++)
 		{
 			if (clients[i] != client)
 			{
-				send(clients[i], buffer, lengthName+1, 0);
+				send(clients[i], buffer, lengthMess+1, 0);
 			}
 		}
 	}
