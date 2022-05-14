@@ -77,7 +77,7 @@ DWORD WINAPI threadClient(LPVOID Param) {
 
 		buffer[ret - 1] = ' ';
 
-		sprintf(buffer + ret, " > %s", pathOut);
+		sprintf(buffer + ret, "> %s", pathOut);
 
 		replaceSlash(buffer);
 
