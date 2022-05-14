@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31729.503
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32505.173
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NetworkProgramming", "NetworkProgramming\NetworkProgramming.vcxproj", "{844C8D9F-B444-4B40-94F6-FE794281FD60}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TCPServer", "TCPServer\TCPServer.vcxproj", "{A1C893C5-421F-4A3A-B079-97472C3C7599}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChatServer", "ChatServer\ChatServer.vcxproj", "{4211C19F-788A-47DB-93C2-B4C9738110BA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DataServer", "DataServer\DataServer.vcxproj", "{6DDE5EC5-7B96-4737-A10B-AD2B6195BBA3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,14 @@ Global
 		{4211C19F-788A-47DB-93C2-B4C9738110BA}.Release|x64.Build.0 = Release|x64
 		{4211C19F-788A-47DB-93C2-B4C9738110BA}.Release|x86.ActiveCfg = Release|Win32
 		{4211C19F-788A-47DB-93C2-B4C9738110BA}.Release|x86.Build.0 = Release|Win32
+		{6DDE5EC5-7B96-4737-A10B-AD2B6195BBA3}.Debug|x64.ActiveCfg = Debug|x64
+		{6DDE5EC5-7B96-4737-A10B-AD2B6195BBA3}.Debug|x64.Build.0 = Debug|x64
+		{6DDE5EC5-7B96-4737-A10B-AD2B6195BBA3}.Debug|x86.ActiveCfg = Debug|Win32
+		{6DDE5EC5-7B96-4737-A10B-AD2B6195BBA3}.Debug|x86.Build.0 = Debug|Win32
+		{6DDE5EC5-7B96-4737-A10B-AD2B6195BBA3}.Release|x64.ActiveCfg = Release|x64
+		{6DDE5EC5-7B96-4737-A10B-AD2B6195BBA3}.Release|x64.Build.0 = Release|x64
+		{6DDE5EC5-7B96-4737-A10B-AD2B6195BBA3}.Release|x86.ActiveCfg = Release|Win32
+		{6DDE5EC5-7B96-4737-A10B-AD2B6195BBA3}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
