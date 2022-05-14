@@ -30,7 +30,7 @@ DWORD WINAPI threadClient(LPVOID Param) {
 
 	SOCKET client = *(SOCKET*)Param;
 
-	char buffer[100];
+	char buffer[1000];
 	char account[20];
 	char password[20];
 	bool hasAcount = FALSE;
@@ -71,25 +71,22 @@ DWORD WINAPI threadClient(LPVOID Param) {
 
 	send(client, success, strlen(success), 0);
 
-	while (1)
-	{
-		ret = recv(client, buffer, sizeof(buffer), 0);
+	ret = recv(client, buffer, sizeof(buffer), 0);
 
-		buffer[ret - 1] = ' ';
+	buffer[ret - 1] = ' ';
 
-		sprintf(buffer + ret, "> %s", pathOut);
+	sprintf(buffer + ret, "> %s", pathOut);
 
-		replaceSlash(buffer);
+	replaceSlash(buffer);
 
-		system(buffer);
+	system(buffer);
 
-		FILE* fileOut = fopen(pathOut, "r");
+	FILE* fileOut = fopen(pathOut, "r");
 
-		ret = fread(buffer, 1, sizeof(buffer), fileOut);
+	ret = fread(buffer, 1, sizeof(buffer), fileOut);
 
-		send(client, buffer, ret, 0);
-	}
-
+	send(client, buffer, ret, 0);
+	
 	closesocket(client);
 	numberClients--;
 
