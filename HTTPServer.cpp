@@ -50,7 +50,6 @@ void ProcessURI(char* req, int client) {
     char* op = (char*)malloc(4);
     char sign = ' ';
     char* queryString = strstr(requestURI, "?");
-
     char* param = strtok(queryString+1, "&");
 
     while (param != NULL)
@@ -68,40 +67,47 @@ void ProcessURI(char* req, int client) {
         }
         param = strtok(NULL, "&");
     }
-
-    int operand = 0;
-
-    if (strcmp(op,"add")==0)
-    {
-        operand = params[0] + params[1];
-        sign = '+';
-    }
-    else if(strcmp(op, "sub") == 0)
-    {
-        operand = params[0] - params[1];
-        sign = '-';
-    }
-    else if (strcmp(op, "div") == 0)
-    { 
-        operand = params[0] / params[1];
-        sign = '/';
-    }
-    else if (strcmp(op, "mul") == 0)
-    {
-        operand = params[0] * params[1];
-        sign = '*';
-    }
-    else
-    {
-        const char* errorMessage = "Invalid op code";
+    
+    if(i<2){
+        const char* errorMessage = "Not enough param";
         send(client, errorMessage, strlen(errorMessage), 0);
-        return ;
-    }
+        
+    }else{
+    
+        int operand = 0;
 
-    char response[256];
-    sprintf(response, "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<html><body><h1>%d %c %d = %d</h1></body></html>", params[0], sign, params[1], operand);
-    send(client, response, strlen(response), 0);
-    return;
+        if (strcmp(op,"add")==0)
+        {
+            operand = params[0] + params[1];
+            sign = '+';
+        }
+        else if(strcmp(op, "sub") == 0)
+        {
+            operand = params[0] - params[1];
+            sign = '-';
+        }
+        else if (strcmp(op, "div") == 0)
+        { 
+            operand = params[0] / params[1];
+            sign = '/';
+        }
+        else if (strcmp(op, "mul") == 0)
+        {
+            operand = params[0] * params[1];
+            sign = '*';
+        }
+        else
+        {
+            const char* errorMessage = "Invalid op code";
+            send(client, errorMessage, strlen(errorMessage), 0);
+            return ;
+        }
+
+        char response[256];
+        sprintf(response, "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<html><body><h1>%d %c %d = %d</h1></body></html>", params[0], sign, params[1], operand);
+        send(client, response, strlen(response), 0);
+        return;
+    }
 }
 
 int main()
